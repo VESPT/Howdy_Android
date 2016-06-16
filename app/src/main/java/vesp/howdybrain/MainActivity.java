@@ -21,13 +21,19 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import vesp.howdybrain.OpenCV.CalcOpticalFlow;
 
 public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     //ImageView imgv;
     private static final String TAG = "MainActivity"; // Debug TAG
     private Mat mOutputFrame;
+    private Mat prevImage;
+    private Mat nextImage;
 
     // Initialize OpenCV
     static {
@@ -151,15 +157,27 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     }
 
     // フレームをキャプチャする毎(30fpsなら毎秒30回)に呼ばれる
+    // 処理はここを中心に書く！
     @Override
     public Mat onCameraFrame(Mat inputFrame) {
-        // グレースケール変換
-        Mat grayFrame = new Mat(inputFrame.height(), inputFrame.width(), CvType.CV_8UC1);
-        Imgproc.cvtColor(inputFrame, grayFrame, Imgproc.COLOR_RGB2GRAY);
-        // Cannyフィルタをかける
-        Imgproc.Canny(grayFrame, mOutputFrame, 80, 100);
-        // ビット反転
-        Core.bitwise_not(mOutputFrame, mOutputFrame);
+        // 既に前の画像を確保されているなら処理を行う
+        if(prevImage != null) {
+            nextImage = inputFrame;
+
+            // オプティカルフロー描写
+            CalcOpticalFlow calcOpticalFlow = new CalcOpticalFlow();
+            if(calcOpticalFlow.doOpticalFlow(prevImage, nextImage)){
+                Log.d(TAG,"オプティカルフロー成功");
+            }
+            else{
+                Log.d(TAG,"オプティカルフロー失敗");
+            }
+        }
+
+        prevImage = inputFrame.clone();
+        mOutputFrame = nextImage;
+        //mOutputFrame = inputFrame;
+
         return mOutputFrame;
     }
 }
