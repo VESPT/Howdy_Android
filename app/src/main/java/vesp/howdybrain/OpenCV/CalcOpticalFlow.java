@@ -121,7 +121,6 @@ public class CalcOpticalFlow {
             else
                 doCounter++;
         }
-
         return corners;
     }
 

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -26,6 +27,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import vesp.howdybrain.CameraSettting.CustomizableCameraView;
 import vesp.howdybrain.OpenCV.CalcOpticalFlow;
 
 public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
@@ -46,7 +48,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
     // カメラビューのインスタンス
     // CameraBridgeViewBase は JavaCameraView/NativeCameraView のスーパークラス
-    private CameraBridgeViewBase mCameraView;
+    //private CameraBridgeViewBase mCameraView;
+    //private JavaCameraView mCameraView;
+    private CustomizableCameraView mCameraView;
 
     // ライブラリ初期化完了後に呼ばれるコールバック (onManagerConnected)
     // public abstract class BaseLoaderCallback implements LoaderCallbackInterface
@@ -82,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         });
 
         // OpenCV
-        // カメラビューのインスタンスを変数にバインド
-        mCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_view);
+        // カメラビューのインスタンスを変数にバインド(ここでJavaCameraViewとバインド)
+        //mCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_view);
+        //org.opencv.android.JavaCameraView
+        mCameraView = (CustomizableCameraView) findViewById(R.id.camera_view);
         // リスナーの設定 (後述)
         mCameraView.setCvCameraViewListener(this);
         /*

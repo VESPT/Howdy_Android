@@ -27,7 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <org.opencv.android.JavaCameraView
+    <vesp.howdybrain.CameraSettting.CustomizableCameraView
         android:id="@+id/camera_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
