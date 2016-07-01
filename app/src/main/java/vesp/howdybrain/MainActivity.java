@@ -90,8 +90,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         //mCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_view);
         //org.opencv.android.JavaCameraView
         mCameraView = (CustomizableCameraView) findViewById(R.id.camera_view);
-        // リスナーの設定 (後述)
+        // リスナーの設定
+        // CvCameraViewListenerインタフェース(CvCameraViewListener2もある)
         mCameraView.setCvCameraViewListener(this);
+
         /*
         Mat mat = new Mat(20,20, CvType.CV_8UC3,new Scalar(0, 0, 255));
         Bitmap bitmap= Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
@@ -137,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     protected void onResume() {
         super.onResume();
+        // FPSの設定
+        mCameraView.setPreviewFPSMin();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
     }
 
